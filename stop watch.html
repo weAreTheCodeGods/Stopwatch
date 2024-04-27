@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>stop watch</title>
+    <link rel="icon" href="stop watch.png"/>
+    <style>
+        body{
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #dddddd;
+            user-select: none;
+            font-family: 'Comic Sans MS', Arial;
+        }
+        #items{
+            display: grid;
+            background-color: #ffffff;
+            padding: 0px 25px;
+            width: 500px;
+            height: 500px;
+            border: 5px solid;
+            justify-content: center;
+            align-items: center;
+        }
+        button{
+            padding: 10px 20px;
+            color: white;
+            margin: 5px;
+            font-size: 3.5rem;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: background-color 0.5s ease;
+            text-shadow: 1px 1px 1px gray;
+            font-family: 'Comic Sans MS', Arial;
+        }
+        #sw{
+            font-size: 5rem;
+        }
+        #buttons{
+            display: flex;
+            justify-content: center;
+            flex-direction: row;
+        }
+        #text{
+            display: flex;
+            justify-content: center;
+        }
+        h1{
+            text-shadow: 2px 2px 2px gray;
+        }
+        /*buttons*/
+        #startBtn{
+            background-color: #00ff00;
+        }
+        #startBtn:hover{
+            background-color: #00dd00;
+        }
+        #stopBtn{
+            background-color: #ff0000;
+        }
+        #stopBtn:hover{
+            background-color: #cc0000;
+        }
+        #resetBtn{
+            background-color: #00ffff;
+        }
+        #resetBtn:hover{
+            background-color: #00ddff;
+        }
+    </style>
+</head>
+<body>
+    <div id="items">
+        <div id="text">
+        <h1 id="sw">00:00:00:00</h1>
+        </div>
+        <div id="buttons">
+         <button id="startBtn" onclick="start()">start</button>
+         <button id="stopBtn" onclick="stop()">stop</button>
+         <button id="resetBtn" onclick="reset()">reset</button>
+        </div>
+    </div>
+    
+    <script>
+    //timer
+        var ms = 0;
+        var s = 0;
+        var m = 0;
+        var h = 0;
+        var timer = null;
+        var max = null;
+        
+    //sys
+        function start(){
+            timer = setInterval(update, 10)
+        }
+        function stop(){
+            clearInterval(max);
+            clearInterval(timer);
+            timer = null;
+        }
+        function reset(){
+            stop()
+            ms = 0;
+            s = 0
+            m = 0
+            h = 0
+            sw.textContent = `${h}0:${m}0:${s}0:${ms}0`;
+        }
+        
+    //main program
+        function update(){
+            ms = parseInt(ms);
+            s = parseInt(s);
+            m = parseInt(m);
+            h = parseInt(h);
+            
+            ms += 1;
+            
+            //update statments
+            if(ms >= 100){
+                ms -= 100;
+                s += 1;
+            }if(s >= 60){
+                s -= 60;
+                m += 1;
+            }if(m >= 60){
+                m -= 60;
+                h += 1;
+            }
+            if(h >= 99){
+                clearInterval(timer)
+                max = setInterval(maxed, 1)
+            }
+            
+            ms = ms.toString().padStart(2, "0");
+            s = s.toString().padStart(2, "0");
+            m = m.toString().padStart(2, "0");
+            h = h.toString().padStart(2, "0");
+            sw.textContent = `${h}:${m}:${s}:${ms}`;
+        }
+        function maxed() {
+            ms = 99;
+            s = 59;
+            m = 59;
+            h = 99;
+            ms = ms.toString().padStart(2, "0");
+            s = s.toString().padStart(2, "0");
+            m = m.toString().padStart(2, "0");
+            h = h.toString().padStart(2, "0");
+            sw.textContent = `${h}:${m}:${s}:${ms}`;
+        }
+    </script>
+</body>
+</html>
